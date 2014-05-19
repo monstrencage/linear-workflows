@@ -1,0 +1,5 @@
+def.cmo : def.cmi
+def.cmx : def.cmi
+example.cmo : def.cmi
+example.cmx : def.cmx
+def.cmi :
