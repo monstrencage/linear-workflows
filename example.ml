@@ -1,5 +1,7 @@
 open Format
 open Def
+open Schedule
+open Time
 
 (* A default DAG to try the code as it comes along. This is a binary tree.*)
 let bintree_default =
@@ -16,9 +18,8 @@ let bintree_default =
 			tabParentsInit.(i) <- [!ind_parent];
 			tabChildrenInit.(!ind_parent) <- i :: tabChildrenInit.(!ind_parent);
 		done;
-	{
-		tabTask = tabTaskInit;
-		tabParents = tabParentsInit;
-		tabChildren = tabChildrenInit;
-	}
+	let temp = { tabTask = tabTaskInit; sources = [0]; tabParents = tabParentsInit; tabChildren = tabChildrenInit; weightSucc = Array.make ntasks 0.;} in
+		computeWS temp
 
+let _ = dfs_v1 bintree_default 
+let _ = dfs_v2 bintree_default 

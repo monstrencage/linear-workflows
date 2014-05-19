@@ -2,6 +2,7 @@ type task = {id : int; w : float; c : float; r : float;}
 
 type edge = { id1 : int; id2 : int; }
 
-type dag = { tabTask : task array; tabParents : int list array; tabChildren : int list array; }
+type dag = { tabTask : task array; sources : int list; tabParents : int list array; tabChildren : int list array; weightSucc : float array; }
+val computeWS : dag -> dag
 
-type linearWorkflow = (int * bool) array
+type linearWorkflow = {order : (int * bool) array; sched : bool array}
