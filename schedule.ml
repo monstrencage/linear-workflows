@@ -1,20 +1,20 @@
 open Format
 open Def
-(*open Tools*)
+open Tools
 
 
 
 let dfs_v1 dag =
 	let ntasks = Array.length dag.tabTask in
-	let result = {order = Array.make ntasks (-1,false); sched = Array.make ntasks false} in
+	let result = {order = Array.make ntasks (-1,false); sched = Array.make ntasks (-1,false)} in
 	let current = ref 0 in (* The position of the current task in the linearization*)
 	let rec auxdfs_v1 taskId =
 		(* We verify first whether all parents of taskId have been scheduled *)
-		if (List.for_all (fun x -> result.sched.(x)) dag.tabParents.(taskId)) then 
+		if (List.for_all (fun x -> snd result.sched.(x)) dag.tabParents.(taskId)) then 
 		begin
-			if (result.sched.(taskId) || (fst result.order.(!current)) >= 0) then failwith "already scheduled";
+			if (snd result.sched.(taskId) || (fst result.order.(!current)) >= 0) then failwith "already scheduled";
 			(* We add the current task to the linearization first, without checkpoint.*)
-			result.sched.(taskId) <- true;
+			result.sched.(taskId) <- (!current , true);
 			result.order.(!current) <- (taskId , false);
 			incr current;
 			
@@ -28,15 +28,15 @@ let dfs_v1 dag =
 
 let dfs_v2 dag =
 	let ntasks = Array.length dag.tabTask in
-	let result = {order = Array.make ntasks (-1,false); sched = Array.make ntasks false} in
+	let result = {order = Array.make ntasks (-1,false); sched = Array.make ntasks (-1,false)} in
 	let current = ref 0 in (* The position of the current task in the linearization*)
 	let rec auxdfs_v2 taskId =
 		(* We verify first whether all parents of taskId have been scheduled *)
-		if (List.for_all (fun x -> result.sched.(x)) dag.tabParents.(taskId)) then 
+		if (List.for_all (fun x -> snd result.sched.(x)) dag.tabParents.(taskId)) then 
 		begin
-			if (result.sched.(taskId) || (fst result.order.(!current)) >= 0) then failwith "already scheduled";
+			if (snd result.sched.(taskId) || (fst result.order.(!current)) >= 0) then failwith "already scheduled";
 			(* We add the current task to the linearization first, without checkpoint.*)
-			result.sched.(taskId) <- true;
+			result.sched.(taskId) <- (!current, true);
 			result.order.(!current) <- (taskId , false);
 			incr current;
 			
