@@ -54,5 +54,11 @@ let computeWS dag =
 (* DEFINITION TYPE LINEAR WORKFLOW *)
 type linearWorkflow = {
 	order : (int * bool) array; 	(* "int" is the index of the task in dag.tabTask; "bool" is whether or not that task is checkpointed *)
-	sched : bool array;		(* sched.(i) is "true" if there exists j and order.(j) = (i,_) (meaning task i has already been scheduled.)*)
+	sched : (int * bool) array;		(* sched.(i) is "j,true" if there exists j and order.(j) = (i,_) (meaning task i has already been scheduled.)*)
 }
+
+type param = {
+	lambda : float;
+	d : float;
+}
+
