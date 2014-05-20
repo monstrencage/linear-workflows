@@ -4,11 +4,11 @@ OCAMLYACC=ocamlyacc
 OCAMLLEX=ocamllex
 OCAMLDEP=ocamldep
 
-OBJS=def.cmi def.cmo schedule.cmo time.cmo example.cmo
-OPTOBJS=def.cmi def.cmx schedule.cmi schedule.cmx time.cmi time.cmx example.cmi example.cmx
+OBJS=def.cmi def.cmo tools.cmo schedule.cmo time.cmo example.cmo
+OPTOBJS=def.cmi def.cmx tools.cmi tool.cmx schedule.cmi schedule.cmx time.cmi time.cmx example.cmi example.cmx
 
-CMOBJS=def.cmo schedule.cmo time.cmo example.cmo
-CMOPTOBJS=def.cmx schedule.cmx time.cmx example.cmx
+CMOBJS=def.cmo tools.cmo schedule.cmo time.cmo example.cmo
+CMOPTOBJS=def.cmx tools.cmx schedule.cmx time.cmx example.cmx
 
 all : dep comp
 

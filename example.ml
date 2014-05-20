@@ -1,7 +1,9 @@
 open Format
 open Def
+open Tools
 open Schedule
 open Time
+
 
 (* A default DAG to try the code as it comes along. This is a binary tree.*)
 let bintree_default =
@@ -21,5 +23,13 @@ let bintree_default =
 	let temp = { tabTask = tabTaskInit; sources = [0]; tabParents = tabParentsInit; tabChildren = tabChildrenInit; weightSucc = Array.make ntasks 0.;} in
 		computeWS temp
 
-let _ = dfs_v1 bintree_default 
-let _ = dfs_v2 bintree_default 
+
+let wf1 = dfs_v1 bintree_default
+let t1 = schedTime {lambda=0.01; d=1.} bintree_default wf1
+let _ = Printf.printf "t1 = %f\n" t1
+
+let wf2 = dfs_v2 bintree_default
+let t2 = schedTime {lambda=0.01; d=1.} bintree_default wf2
+let _ = Printf.printf "t2 = %f\n" t2
+
+
