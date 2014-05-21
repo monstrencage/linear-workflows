@@ -1,13 +1,12 @@
-open Format
+(*open Format
 open Def
 open Tools
 open Schedule
 open Time
 
-
 (* A default DAG to try the code as it comes along. This is a binary tree.*)
-let bintree_default =
-	let ntasks = 10 in
+let bintree_default k =
+	let ntasks = k in
 	let tabTaskInit = Array.make ntasks {id=0;w=5.;c=1.;r=1.} in
 	let tabParentsInit = Array.make ntasks [] in
 	let tabChildrenInit = Array.make ntasks [] in
@@ -24,12 +23,42 @@ let bintree_default =
 		computeWS temp
 
 
-let wf1 = dfs_v1 bintree_default
-let t1 = schedTime {lambda=0.01; d=1.} bintree_default wf1
+let wf1 = dfs_v1 (bintree_default 10)
+let t1 = schedTime {lambda=0.01; d=1.} (bintree_default 10) wf1
 let _ = Printf.printf "t1 = %f\n" t1
 
-let wf2 = dfs_v2 bintree_default
-let t2 = schedTime {lambda=0.01; d=1.} bintree_default wf2
+let wf2 = dfs_v2 (bintree_default 10)
+let t2 = schedTime {lambda=0.01; d=1.} (bintree_default 10) wf2
 let _ = Printf.printf "t2 = %f\n" t2
 
 
+*)
+open Defs
+open Dag
+
+let bintree_default k : spec = 
+  let t = 
+    let rec aux acc = function
+      | -1 -> acc
+      | i -> aux ({w=5.;c=0.;r=0.}::acc) (i-1)
+    in
+    aux [] (k-1)
+  in
+  let rec aux acc i = 
+    let n = 2*i+1 in
+    if n > k - 1
+    then acc
+    else 
+      if n = k - 1
+      then (i,n)::acc
+      else aux ((i,n)::(i,n+1)::acc) (i+1)
+  in
+  (t,aux [] 0)
+
+let example = spec_to_dag (bintree_default 10)
+
+let wf1 = Schedule.dfs_v1 example
+
+let wf2 = Schedule.dfs_v2 example
+
+let ex2 = dag_from_file "exdag.dag"
