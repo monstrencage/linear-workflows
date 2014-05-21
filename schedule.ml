@@ -73,7 +73,12 @@ let dfs_v1 dag =
   {order = ord;sched=sch}
 
 let dfs_v2 dag =
-  let w = dag.weightsucc in
+  let w i = 
+    try
+      IMap.find i dag.weightsucc 
+    with 
+    | Not_found -> 0.
+  in
   let sort s = 
     List.fast_sort 
       (fun x y -> compare (w x) (w y)) 

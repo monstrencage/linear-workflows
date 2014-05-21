@@ -1,46 +1,15 @@
-(*open Format
-open Def
-open Tools
-open Schedule
-open Time
+(** Basic examples. *)
 
-(* A default DAG to try the code as it comes along. This is a binary tree.*)
-let bintree_default k =
-	let ntasks = k in
-	let tabTaskInit = Array.make ntasks {id=0;w=5.;c=1.;r=1.} in
-	let tabParentsInit = Array.make ntasks [] in
-	let tabChildrenInit = Array.make ntasks [] in
-	let ind_parent = ref 0 in
-	let card_child = ref 0 in
-		for i = 1 to ntasks -1 do
-			tabTaskInit.(i) <- {id=i;w=5.;c=1.;r=1.};
-			if !card_child >= 2 then (incr ind_parent; card_child := 0);
-			incr card_child;
-			tabParentsInit.(i) <- [!ind_parent];
-			tabChildrenInit.(!ind_parent) <- i :: tabChildrenInit.(!ind_parent);
-		done;
-	let temp = { tabTask = tabTaskInit; sources = [0]; tabParents = tabParentsInit; tabChildren = tabChildrenInit; weightSucc = Array.make ntasks 0.;} in
-		computeWS temp
-
-
-let wf1 = dfs_v1 (bintree_default 10)
-let t1 = schedTime {lambda=0.01; d=1.} (bintree_default 10) wf1
-let _ = Printf.printf "t1 = %f\n" t1
-
-let wf2 = dfs_v2 (bintree_default 10)
-let t2 = schedTime {lambda=0.01; d=1.} (bintree_default 10) wf2
-let _ = Printf.printf "t2 = %f\n" t2
-
-
-*)
 open Defs
 open Dag
 
-let bintree_default k : spec = 
+(** [bintree_default size weight] computes a binary tree with [size]
+    identical tasks, each of them having weight [weight]. *)
+let bintree_default k w : spec = 
   let t = 
     let rec aux acc = function
       | -1 -> acc
-      | i -> aux ({w=5.;c=0.;r=0.}::acc) (i-1)
+      | i -> aux ({w=w;c=0.;r=0.}::acc) (i-1)
     in
     aux [] (k-1)
   in
@@ -55,10 +24,37 @@ let bintree_default k : spec =
   in
   (t,aux [] 0)
 
-let example = spec_to_dag (bintree_default 10)
+(** Binary tree of size [10] with weight [5.]. *)
+let ex1 = spec_to_dag (bintree_default 10 5.)
 
-let wf1 = Schedule.dfs_v1 example
+(** First scheduling policy on [ex1]. *)
+let wf11 = Schedule.dfs_v1 ex1
+(*
+let t11 = schedTime {lambda=0.01; d=1.} ex1 wf11
+let _ = Printf.printf "t11 = %f\n" t11
+*)
 
-let wf2 = Schedule.dfs_v2 example
+(** Second scheduling policy on [example]. *)
+let wf12 = Schedule.dfs_v2 ex1
+(*
+let t12 = schedTime {lambda=0.01; d=1.} ex1 wf12
+let _ = Printf.printf "t12 = %f\n" t12
+*)
 
+(** DAG extracted from the file [exdag.dag]. *)
 let ex2 = dag_from_file "exdag.dag"
+
+(** First scheduling policy on [ex2]. *)
+let wf21 = Schedule.dfs_v1 ex2
+(*
+let t21 = schedTime {lambda=0.01; d=1.} ex2 wf21
+let _ = Printf.printf "t21 = %f\n" t21
+*)
+
+(** Second scheduling policy on [ex2]. *)
+let wf22 = Schedule.dfs_v2 ex2
+(*
+let t22 = schedTime {lambda=0.01; d=1.} ex2 wf22
+let _ = Printf.printf "t22 = %f\n" t22
+*)
+

@@ -6,3 +6,6 @@ opt :
 
 clean :
 	ocamlbuild -clean
+
+doc :
+	ocamlbuild doc.docdir/index.html
