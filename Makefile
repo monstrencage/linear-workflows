@@ -1,11 +1,11 @@
 all : 
-	ocamlbuild example.byte
+	ocamlbuild -lib unix example.byte
 
 opt : 
-	ocamlbuild example.native
+	ocamlbuild -lib unix example.native
 
 clean :
 	ocamlbuild -clean
 
 doc :
-	ocamlbuild doc.docdir/index.html
+	ocamlbuild -lib unix doc.docdir/index.html

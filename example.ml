@@ -9,7 +9,7 @@ let bintree_default k w : spec =
   let t = 
     let rec aux acc = function
       | -1 -> acc
-      | i -> aux ({w=w;c=0.;r=0.}::acc) (i-1)
+      | i -> aux ({w=w;c=1.;r=1.}::acc) (i-1)
     in
     aux [] (k-1)
   in
@@ -26,6 +26,7 @@ let bintree_default k w : spec =
 
 (** Binary tree of size [10] with weight [5.]. *)
 let ex1 = spec_to_dag (bintree_default 10 5.)
+let _ = draw_dag ex1 "ex1"
 
 (** First scheduling policy on [ex1]. *)
 let wf11 = Schedule.dfs_v1 ex1
@@ -43,6 +44,7 @@ let _ = Printf.printf "t12 = %f\n" t12
 
 (** DAG extracted from the file [exdag.dag]. *)
 let ex2 = dag_from_file "exdag.dag"
+let _ = draw_dag ex2 "exdag"
 
 (** First scheduling policy on [ex2]. *)
 let wf21 = Schedule.dfs_v1 ex2

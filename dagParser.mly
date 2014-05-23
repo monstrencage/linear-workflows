@@ -1,8 +1,9 @@
-%{ 
+%{
+(** Parser for specifications of DAGs of tasks *)
   open Defs
 %}
 
-%token ARROW EOF NEWLINE
+%token ARROW EOF NEWLINE VIRG
 %token<int> INT
 %token<float> FL
 
@@ -15,7 +16,7 @@ specs:
  | deps { [],$1 }
 
 task:
- | FL { {w=$1;c=0.;r=0.} }
+ | FL VIRG FL VIRG FL { {w=$1;c=$3;r=$5} }
  
 deps:
  | EOF { [] }
