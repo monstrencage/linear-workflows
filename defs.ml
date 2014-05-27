@@ -40,6 +40,7 @@ type spec = task list * (int * int) list
 type linearwf = {
   order : int IMap.t; (** maps [i] to the [i]th task in the order *)
   sched : int IMap.t; (** maps task [i] to its rank in the order *)
+  chk : ISet.t        (** the set of checkpointed tasks *)
 }
 
 (** Type of the parameters. *)

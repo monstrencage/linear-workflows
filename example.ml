@@ -37,7 +37,11 @@ let full_test dag name =
   let _ = draw_dag dag name in
   test dag (Printf.sprintf "%s (dfs_v1)" name) Schedule.dfs_v1 ;
   test dag (Printf.sprintf "%s (dfs_v2)" name) Schedule.dfs_v2 ;
-  test dag (Printf.sprintf "%s (bfs)" name) Schedule.bfs 
+  test dag (Printf.sprintf "%s (bfs)" name) Schedule.bfs ;
+  test dag (Printf.sprintf "%s (bfs + chk_all)" name) 
+    (fun dag -> Checkpoint.chk_all dag (Schedule.bfs dag));
+  test dag (Printf.sprintf "%s (bfs + chk_per)" name)
+    (fun dag -> Checkpoint.chk_per dag (Schedule.bfs dag) 3.)
 
 (** Binary tree of size [10] with weight [5.]. *)
 let _ = 

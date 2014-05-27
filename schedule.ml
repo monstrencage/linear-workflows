@@ -14,7 +14,7 @@ let dfs_v1 dag =
   in
   let ord,sch,tps = ISet.fold aux dag.sources (IMap.empty,IMap.empty,0)
   in
-  let res = {order = ord;sched=sch} in
+  let res = {order = ord;sched=sch;chk = ISet.empty} in
   if tps <> dag.size
   then  (Printf.printf "Not everyone has been scheduled: %d.\n" tps; print_order res;failwith "") ; 
   res
@@ -38,7 +38,7 @@ let dfs_compare cmp dag =
   let ord,sch,tps = 
     List.fold_left aux (IMap.empty,IMap.empty,0) (sort dag.sources)
   in
-  let res = {order = ord;sched=sch} in
+  let res = {order = ord;sched=sch;chk = ISet.empty} in
   if tps <> dag.size
   then  (Printf.printf "Not everyone has been scheduled: %d.\n" tps; print_order res;failwith "") ; 
   res
@@ -75,7 +75,7 @@ let bfs dag =
   let ord,sch,tps = 
     aux (IMap.empty,IMap.empty,0) (ISet.fold (fun j q -> FQueue.push j q) dag.sources FQueue.empty)
   in
-  let res = {order = ord;sched=sch} in
+  let res = {order = ord;sched=sch;chk = ISet.empty} in
   if tps <> dag.size
   then  (Printf.printf "Not everyone has been scheduled: %d.\n" tps; print_order res;failwith "") ; 
   res
