@@ -123,11 +123,12 @@ let spec_to_dag (tsks,deps :spec) : dag =
 (** Prints a linear workflow on the standard output. *)
 let print_order lw =
   let rec aux k =
-    try Printf.printf "%d:%d\n" k (IMap.find k lw.order);
+    try Printf.printf "%d;" (IMap.find k lw.order) ;
 	aux (k+1)
     with Not_found -> ()
   in
-  aux 0
+  aux 0;
+  print_newline()
 
 let dag_from_file filename =
   let ch = open_in filename in
